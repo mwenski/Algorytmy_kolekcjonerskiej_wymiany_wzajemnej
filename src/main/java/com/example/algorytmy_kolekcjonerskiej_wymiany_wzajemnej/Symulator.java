@@ -20,7 +20,8 @@ public class Symulator extends Application {
         primaryStage.setTitle("Symulator obliczeniowy");
 
         GridPane inputTable = new GridPane();
-        
+        GridPane dataTable = new GridPane();
+
         for (int i = 0; i < 2; i++){
             for (int j = 0; j < 3; j++){
                 TextField inputTableCell = new TextField();
@@ -28,6 +29,10 @@ public class Symulator extends Application {
             }
         }
 
+        for (int j = 0; j < 3; j++){
+            TextField inputDataTableCell = new TextField();
+            dataTable.add(inputDataTableCell, 0, j);
+        }
         /*
         Button button = new Button("Click to get text");
 
@@ -39,6 +44,7 @@ public class Symulator extends Application {
          */
 
         Scene scene = new Scene(inputTable, 240, 100);
+        //TODO: Pokombinować z tymi gridami
         primaryStage.setScene(scene);
         primaryStage.show();
     }
