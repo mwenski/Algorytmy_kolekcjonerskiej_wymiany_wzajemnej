@@ -73,16 +73,45 @@ public class Symulator extends Application {
             }
         }
 
-        //TODO: Sprawdzić co jest nie tak z gridem
         GridPane inputTable = new GridPane();
+        GridPane widthPane = new GridPane();
+        GridPane heightPane = new GridPane();
+        GridPane centralPane = new GridPane();
+
+        Label labelWidth = new Label("Ilość przedmiotów");
+        widthPane.add(labelWidth, 0, 0, 3, 1);
+        for (int i = 0; i < 3; i++){
+            Label label = new Label("#" + String.format("%d", i));
+            widthPane.add(label, i, 1, 1, 1);
+        }
+        inputTable.add(widthPane, 2, 0, 3, 2);
+
+        Label labelHeight = new Label("Użytkownicy");
+        heightPane.add(labelHeight, 0, 0, 1, 2);
+        for (int i = 0; i < 2; i++){
+            Label label = new Label("#" + String.format("%d", i));
+            heightPane.add(label, 1, i, 1, 1);
+        }
+        inputTable.add(heightPane, 0, 2, 2, 2);
+
+        for (int i = 0; i < 2; i++){
+            for (int j = 0; j < 3; j++){
+                TextField inputTableCell = new TextField();
+                //inputTableCell.setPrefSize(40, 20);
+                centralPane.add(inputTableCell, j, i, 1, 1);
+            }
+        }
+        inputTable.add(centralPane, 3, 3, 3, 2);
+
         //inputTable.setMinSize(400,400);
         //inputTable.setMaxSize(400,400);
 
+        /*
         int rowCount = 4;
         int columnCount = 5;
 
         RowConstraints rc = new RowConstraints();
-        rc.setPercentHeight(100d / rowCount);
+        rc.setPercentHeight(50d / rowCount);
 
         for (int i = 0; i < rowCount; i++) {
             inputTable.getRowConstraints().add(rc);
@@ -95,28 +124,29 @@ public class Symulator extends Application {
             inputTable.getColumnConstraints().add(cc);
         }
 
-        Label label = new Label("   ");
-        inputTable.add(label, 0, 0, 2, 2);
+
         Label labelWidth = new Label("Ilość przedmiotów");
         inputTable.add(labelWidth, 2, 0, 3, 1);
         Label labelHeight = new Label("Użytkownik");
         inputTable.add(labelHeight, 0, 2, 1, 2);
-        for (int i = 0; i < 3; i++){
+        for (int i = 3; i < 6; i++){
             Label label1 = new Label("#" + String.format("%d", i));
-            inputTable.add(label1, (2+i), 1, 1, 1);
+            inputTable.add(label1, i, 1, 1, 1);
         }
-        for (int i = 0; i < 2; i++){
+        for (int i = 3; i < 5; i++){
             Label label2 = new Label("#" + String.format("%d", i));
-            inputTable.add(label2, 1, (2+i), 1, 1);
+            inputTable.add(label2, 1, i, 1, 1);
         }
 
         for (int i = 3; i < 5; i++){
             for (int j = 3; j < 6; j++){
                 TextField inputTableCell = new TextField();
                 //inputTableCell.setPrefSize(40, 20);
-                inputTable.add(inputTableCell, j, i, 1, 1);
+                inputTable.add(inputTableCell, 3, 3, 1, 1);
             }
         }
+
+         */
 
         vBox.getChildren().addAll(dataTable, inputTable);
 
