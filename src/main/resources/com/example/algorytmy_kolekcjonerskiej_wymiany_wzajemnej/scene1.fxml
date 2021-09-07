@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Scene1"
+            prefHeight="400.0" prefWidth="600.0">
+    <VBox alignment="TOP_CENTER">
+        <Label text="Podaj podstawowe parametry" />
+        <HBox>
+            <Label text="Podaj liczbę kolekcjonerów: " />
+            <TextField fx:id="Collectors"/>
+        </HBox>
+        <HBox>
+            <Label text="Podaj liczbę przedmiotów wchodzących w skład typowej kolekcji: " />
+            <TextField fx:id="Things"/>
+        </HBox>
+        <Button text="OK" fx:id="OKButton" onAction="#sendData"/>
+    </VBox>
+</AnchorPane>
