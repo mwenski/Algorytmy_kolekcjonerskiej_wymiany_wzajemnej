@@ -11,13 +11,13 @@
     </padding>
     <top>
         <HBox>
-            <Button text="Nowy" fx:id="NewButton" onAction="#newCase"/>
-            <Button text="Wygeneruj raport" fx:id="ReportButton" />
+            <Button fx:id="NewButton" onAction="#newCase" text="Nowy" />
+            <Button fx:id="ReportButton" onAction="#generateReport" text="Wygeneruj raport" />
         </HBox>
     </top>
     <left>
         <VBox alignment="TOP_CENTER">
-            <Label text="Podaj wartości poszczególnych przedmiotów"/>
+            <Label text="Podaj wartości poszczególnych przedmiotów" />
             <GridPane fx:id="PricesInput" />
         </VBox>
     </left>
@@ -37,16 +37,17 @@
         <VBox>
             <HBox alignment="TOP_CENTER">
                 <VBox>
-                    <Label text="Podaj ilość poszczególnych przedmiotów w kolekcjach"/>
+                    <Label text="Podaj ilość poszczególnych przedmiotów w kolekcjach" />
                     <GridPane fx:id="ThingsInput" />
                 </VBox>
                 <VBox>
-                    <Label text="Ilość poszczególnych przedmiotów po wymianach"/>
+                    <Label text="Ilość poszczególnych przedmiotów po wymianach" />
                     <GridPane fx:id="ThingsOutput" />
                 </VBox>
             </HBox>
             <HBox alignment="TOP_CENTER">
-                <Button text="Start" fx:id="StartButton"/>
+                <Button fx:id="StartButton" onAction="#startComputing" text="Start" />
+                <Button fx:id="RandomButton" onAction="#setRandomValues" text="Losuj wartości" />
             </HBox>
         </VBox>
     </bottom>

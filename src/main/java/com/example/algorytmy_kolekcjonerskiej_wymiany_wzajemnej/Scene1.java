@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.*;
 import java.util.*;
 
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class Scene1 {
+
     @FXML
     private Button OKButton;
 
@@ -21,22 +24,10 @@ public class Scene1 {
 
     @FXML
     protected void sendData(ActionEvent event) throws Exception{
-        /*
-        Stage stage;
-        Parent root;
-
-        stage = (Stage) OKButton.getScene().getWindow();
-        root = FXMLLoader.load(getClass().getResource("scene2.fxml"));
-
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-         */
-        int collectors = Integer.parseInt(this.Collectors.getText());
-        int things = Integer.parseInt(this.Things.getText());
-
         try {
+            int collectors = Integer.parseInt(this.Collectors.getText());
+            int things = Integer.parseInt(this.Things.getText());
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("scene2.fxml"));
             Parent root = (Parent) loader.load();
 
@@ -47,8 +38,16 @@ public class Scene1 {
             stage.setScene(new Scene(root));
             stage.setTitle("Symulator");
             stage.show();
-        }catch (IOException e){
+
+            Stage thisStage = (Stage) OKButton.getScene().getWindow();
+            thisStage.close();
+        }catch (Exception e){
             e.printStackTrace();
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Błąd");
+            error.setHeaderText(null);
+            error.setContentText("Wprowadzono nieprawidłowe dane");
+            error.show();
         }
     }
 }
