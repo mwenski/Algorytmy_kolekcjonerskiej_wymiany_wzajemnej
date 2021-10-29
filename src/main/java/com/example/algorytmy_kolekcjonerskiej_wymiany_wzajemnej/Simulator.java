@@ -11,7 +11,7 @@ public class Simulator extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Simulator.class.getResource("scene1.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Symulator");
         stage.setScene(scene);
         stage.show();

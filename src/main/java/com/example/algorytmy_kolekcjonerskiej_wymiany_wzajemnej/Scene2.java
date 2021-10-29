@@ -34,7 +34,24 @@ public class Scene2 {
         this.things = j;
     }
 
+    public void setWidthAndHeightOfTheTableCells(int rowCount, int columnCount, GridPane gridPane, double prefWidth, double prefHeight){
+        RowConstraints rc = new RowConstraints();
+        rc.setPrefHeight(prefHeight);
+
+        for (int i = 0; i < rowCount; i++) {
+            gridPane.getRowConstraints().add(rc);
+        }
+
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setPrefWidth(prefWidth);
+
+        for (int i = 0; i < columnCount; i++) {
+            gridPane.getColumnConstraints().add(cc);
+        }
+    }
+
     public void setPricesInput(){
+        setWidthAndHeightOfTheTableCells(things, 2, PricesInput, 120d, 50d);
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < things + 1; j++) {
                 if (i == 0 && j==0){
@@ -61,6 +78,7 @@ public class Scene2 {
             Label label = new Label("#" + String.format("%d", i));
             VPane.add(label, 1, i, 1, 1);
         }
+        setWidthAndHeightOfTheTableCells(collectors, 2, VPane, 50d, 30d);
         gridPane.add(VPane, 0, 2, 2, 2);
     }
 
@@ -72,6 +90,7 @@ public class Scene2 {
             Label label = new Label("#" + String.format("%d", i));
             HPane.add(label, i, 1, 1, 1);
         }
+        setWidthAndHeightOfTheTableCells(2, things, HPane, 50d, 30d);
         gridPane.add(HPane, 2, 0, things, 2);
     }
 
@@ -82,10 +101,11 @@ public class Scene2 {
         for (int i = 0; i < collectors; i++){
             for (int j = 0; j < things; j++){
                 TextField inputTableCell = new TextField();
-                //inputTableCell.setPrefSize(40, 20);
+                //inputTableCell.setPrefSize(10, 5);
                 ThingsInputPane.add(inputTableCell, j, i, 1, 1);
             }
         }
+        setWidthAndHeightOfTheTableCells(collectors, things, ThingsInputPane, 50d, 30d);
         ThingsInput.add(ThingsInputPane, 3, 3, things, collectors);
     }
 
@@ -100,6 +120,7 @@ public class Scene2 {
                 ThingsOutputPane.add(label, j, i, 1, 1);
             }
         }
+        setWidthAndHeightOfTheTableCells(collectors, things, ThingsOutputPane, 50d, 30d);
         ThingsOutput.add(ThingsOutputPane, 3, 3, things, collectors);
     }
 
@@ -210,8 +231,5 @@ public class Scene2 {
                     setValuesTableColumns();
                 }
         );
-
     }
-
-
 }

@@ -4,8 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Scene2">
-<BorderPane>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Scene2">
     <padding>
         <Insets bottom="30" left="40" right="20" top="10" />
     </padding>
@@ -35,7 +34,7 @@
     </right>
     <bottom>
         <VBox>
-            <HBox alignment="TOP_CENTER">
+            <HBox alignment="CENTER">
                 <VBox>
                     <Label text="Podaj ilość poszczególnych przedmiotów w kolekcjach" />
                     <GridPane fx:id="ThingsInput" />
@@ -53,4 +52,3 @@
     </bottom>
 </BorderPane>
 
-</AnchorPane>

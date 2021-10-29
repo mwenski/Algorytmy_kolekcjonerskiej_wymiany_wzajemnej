@@ -106,29 +106,25 @@ public class Symulator extends Application {
         //inputTable.setMinSize(400,400);
         //inputTable.setMaxSize(400,400);
 
-        /*
+
         int rowCount = 4;
         int columnCount = 5;
 
         RowConstraints rc = new RowConstraints();
-        rc.setPercentHeight(50d / rowCount);
+        rc.setPercentHeight(500d / rowCount);
 
         for (int i = 0; i < rowCount; i++) {
             inputTable.getRowConstraints().add(rc);
         }
 
         ColumnConstraints cc = new ColumnConstraints();
-        cc.setPercentWidth(100d / columnCount);
+        cc.setPercentWidth(3000d / columnCount);
 
         for (int i = 0; i < columnCount; i++) {
             inputTable.getColumnConstraints().add(cc);
         }
 
 
-        Label labelWidth = new Label("Ilość przedmiotów");
-        inputTable.add(labelWidth, 2, 0, 3, 1);
-        Label labelHeight = new Label("Użytkownik");
-        inputTable.add(labelHeight, 0, 2, 1, 2);
         for (int i = 3; i < 6; i++){
             Label label1 = new Label("#" + String.format("%d", i));
             inputTable.add(label1, i, 1, 1, 1);
@@ -146,7 +142,7 @@ public class Symulator extends Application {
             }
         }
 
-         */
+
 
         vBox.getChildren().addAll(dataTable, inputTable);
 
