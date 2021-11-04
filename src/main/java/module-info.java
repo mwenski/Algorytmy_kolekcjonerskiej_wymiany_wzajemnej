@@ -2,9 +2,12 @@ module com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej {
     requires javafx.controls;
     requires javafx.fxml;
     requires opencsv;
-    requires org.apache.poi.poi;
-    requires org.apache.poi.ooxml;
+    requires poi.ooxml;
+    requires poi;
+    requires poi.ooxml.schemas;
 
     opens com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej to javafx.fxml;
     exports com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
+    exports com.example.ReadWriteFile;
+    opens com.example.ReadWriteFile to javafx.fxml;
 }

@@ -1,22 +1,13 @@
 package com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.*;
-import java.util.*;
 
+import com.example.ReadWriteFile.*;
 import com.opencsv.*;
-import org.apache.poi.*;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -31,9 +22,14 @@ public class Scene1 {
     @FXML
     private Label FileLabel, SaveDirectoryLabel;
 
+    public File file = new File(System.getProperty("user.dir") + "\\Test.csv");
+    public File selectedDirectory = new File(System.getProperty("user.home")); //PLIK
+
+    public String chosenFile = file.getAbsolutePath();
+    public String chosenDirectory = selectedDirectory.getAbsolutePath(); //ŚCIEŻKA
+
     final FileChooser fileChooser = new FileChooser();
     final DirectoryChooser directoryChooser = new DirectoryChooser();
-    public File file;
     final Stage stage = new Stage();
     CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
@@ -65,39 +61,25 @@ public class Scene1 {
 
     @FXML
     protected void chooseDirectoryForSave(){
-        final File selectedDirectory = directoryChooser.showDialog(stage);
+        selectedDirectory = directoryChooser.showDialog(stage);
         if (selectedDirectory != null) {
             SaveDirectoryLabel.setText(selectedDirectory.getAbsolutePath());
+            chosenDirectory = selectedDirectory.getAbsolutePath();
         }
     }
 
     @FXML
-    protected void startComputing(){
-        try(CSVReader reader = new CSVReaderBuilder(new FileReader(file))
-                                                    .withCSVParser(csvParser)
-                                                    .build()){
-            String[] lineInArray;
-            int intLine = 0;
-
-            while ((lineInArray = reader.readNext()) != null) {
-                System.out.println(lineInArray[0] +"|"+ lineInArray[1] +"|"+ lineInArray[2] +"|" +lineInArray[3]+"|" +lineInArray[8]);
-                if(intLine == 1){
-
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("Błąd");
-            error.setHeaderText(null);
-            error.setContentText("Błąd odczytu pliku");
-            error.show();
-        }
+    protected void startComputing() throws Exception {
+        ReadWriteFile r = new ReadWriteFile();
+        r.readCSVFile(file, csvParser);
+        r.endWriting(chosenDirectory);
     }
 
     public void initialize(){
         configureFileChooser(fileChooser);
         configureDirectoryChooser(directoryChooser);
+        FileLabel.setText(chosenFile);
+        SaveDirectoryLabel.setText(chosenDirectory);
     }
 
 /*
