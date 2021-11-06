@@ -150,16 +150,16 @@ public class Scene2 {
         Parent root;
 
         stage = (Stage) NewButton.getScene().getWindow();
-        root = FXMLLoader.load(getClass().getResource("scene1.fxml"));
+        root = FXMLLoader.load(getClass().getResource("scene.fxml"));
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();*/
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("scene1.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scene.fxml"));
         Parent root = (Parent) loader.load();
 
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
+       // stage.setScene(new Scene(root));
         stage.setTitle("Symulator");
         stage.show();
 

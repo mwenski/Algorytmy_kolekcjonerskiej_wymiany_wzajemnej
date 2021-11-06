@@ -1,3 +1,7 @@
+/*******************************
+ Główna klasa JavaFX,
+ uruchamiająca cały symulator i aplikację okienkową zaprojektowaną w pliku FXML
+ *******************************/
 package com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
 
 import javafx.application.Application;
@@ -10,7 +14,7 @@ import java.io.IOException;
 public class Simulator extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Simulator.class.getResource("scene1.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Simulator.class.getResource("scene.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Symulator");
         stage.setScene(scene);

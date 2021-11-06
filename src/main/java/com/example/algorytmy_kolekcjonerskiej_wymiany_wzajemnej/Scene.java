@@ -1,3 +1,6 @@
+/*******************************
+ Kontroler służący do sterowania logiką interfejsu symulatora
+ *******************************/
 package com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
 
 import java.io.File;
@@ -12,12 +15,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class Scene1 {
+public class Scene {
     @FXML
     private Button OKButton, InputButton, SaveDirectoryButton;
-
-    @FXML
-    private TextField Collectors, Things;
 
     @FXML
     private Label FileLabel, SaveDirectoryLabel;
@@ -32,6 +32,12 @@ public class Scene1 {
     final DirectoryChooser directoryChooser = new DirectoryChooser();
     final Stage stage = new Stage();
     CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
+
+    public void setModeOfButtons(boolean b){
+        OKButton.setDisable(b);
+        InputButton.setDisable(b);
+        SaveDirectoryButton.setDisable(b);
+    }
 
     private static void configureFileChooser(final FileChooser fileChooser){
         fileChooser.setTitle("Wybierz plik wejściowy");
@@ -70,9 +76,16 @@ public class Scene1 {
 
     @FXML
     protected void startComputing() throws Exception {
+        setModeOfButtons(true);
         ReadWriteFile r = new ReadWriteFile();
         r.readCSVFile(file, csvParser);
+
+        Algorithm a = new Algorithm(r.numberOfUsers, r.numberOfSeries, r.numberOfObjects);
+        a.setPrices(r.Prices, r.Bonus);
+        a.setPropositions(r.Propositions);
+
         r.endWriting(chosenDirectory);
+        setModeOfButtons(false);
     }
 
     public void initialize(){
