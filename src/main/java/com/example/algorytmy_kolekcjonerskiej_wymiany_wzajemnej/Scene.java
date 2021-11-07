@@ -6,7 +6,7 @@ package com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
 import java.io.File;
 import java.lang.*;
 
-import com.example.ReadWriteFile.*;
+import com.example.Algorithms.Algorithm;
 import com.opencsv.*;
 
 import javafx.fxml.FXML;
@@ -14,6 +14,9 @@ import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import static com.example.ReadWriteFile.ReadFile.*;
+import static com.example.ReadWriteFile.WriteFile.*;
 
 public class Scene {
     @FXML
@@ -33,12 +36,14 @@ public class Scene {
     final Stage stage = new Stage();
     CSVParser csvParser = new CSVParserBuilder().withSeparator(',').build();
 
+    //Funkcja sterująca dostępnością przycisków w oknie symulatora
     public void setModeOfButtons(boolean b){
         OKButton.setDisable(b);
         InputButton.setDisable(b);
         SaveDirectoryButton.setDisable(b);
     }
 
+    //Funkcja konfigurująca okno dialogowe wyboru pliku odczytu
     private static void configureFileChooser(final FileChooser fileChooser){
         fileChooser.setTitle("Wybierz plik wejściowy");
         fileChooser.setInitialDirectory(
@@ -50,6 +55,7 @@ public class Scene {
         );
     }
 
+    //Funkcja konfigurująca okno dialogowe wyboru folderu zapisu
     private static void configureDirectoryChooser(final DirectoryChooser directoryChooser){
         directoryChooser.setTitle("Wybierz folder zapisu");
         directoryChooser.setInitialDirectory(
@@ -57,6 +63,7 @@ public class Scene {
         );
     }
 
+    //Funkcja wywołująca okno dialogowe wyboru pliku odczytu
     @FXML
     protected void chooseInputFile(){
         file = fileChooser.showOpenDialog(stage);
@@ -65,6 +72,7 @@ public class Scene {
         }
     }
 
+    //Funkcja wywołująca okno dialogowe wyboru folderu zapisu
     @FXML
     protected void chooseDirectoryForSave(){
         selectedDirectory = directoryChooser.showDialog(stage);
@@ -77,17 +85,34 @@ public class Scene {
     @FXML
     protected void startComputing() throws Exception {
         setModeOfButtons(true);
-        ReadWriteFile r = new ReadWriteFile();
-        r.readCSVFile(file, csvParser);
+        /*
+        ReadWriteFile rw = new ReadWriteFile();
+        rw.readCSVFile(file, csvParser);
+        rw.prepareFile();
 
-        Algorithm a = new Algorithm(r.numberOfUsers, r.numberOfSeries, r.numberOfObjects);
-        a.setPrices(r.Prices, r.Bonus);
-        a.setPropositions(r.Propositions);
+        Algorithm a = new Algorithm(rw.numberOfUsers, rw.numberOfSeries, rw.numberOfObjects);
+        a.setPrices(rw.Prices, rw.Bonus);
+        a.setPropositions(rw.Propositions);
+        a.completeAdjacency();
 
-        r.endWriting(chosenDirectory);
+        rw.endWriting(chosenDirectory);
+         */
+        readCSVFile(file, csvParser);
+        prepareFile();
+
+
+        Algorithm a = new Algorithm(numberOfUsers, numberOfSeries, numberOfObjects);
+        a.setPrices(Prices, Bonus);
+        a.setPropositions(Propositions);
+        a.completeAdjacency();
+
+
+        endWriting(chosenDirectory);
+
         setModeOfButtons(false);
     }
 
+    //Funkcja inicjalizująca, uruchamiana raz na początku
     public void initialize(){
         configureFileChooser(fileChooser);
         configureDirectoryChooser(directoryChooser);

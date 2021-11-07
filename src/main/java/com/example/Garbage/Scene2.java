@@ -1,4 +1,4 @@
-package com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
+package com.example.Garbage;
 
 import java.lang.*;
 import java.util.*;
