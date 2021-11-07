@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Plik FXML, w którym zdefiniowany jest układ aplikacji okienkowej -->
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<!--<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Scene1" alignment="center" hgap="10" vgap="10">
+    <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+    <Text text="Podaj podstawowe parametry" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
+    <Label text="Podaj liczbę kolekcjonerów:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="Collectors" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Label text="Podaj liczbę przedmiotów wchodzących w skład typowej kolekcji:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <TextField fx:id="Things" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <HBox spacing="10" alignment="bottom_right" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button text="OK" fx:id="OKButton" onAction="#sendData"/>
+    </HBox>
+</GridPane>-->
+
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Scene" alignment="center" hgap="10" vgap="10">
+    <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+    <Text text="Symulator" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3"/>
+    <Label text="Wybierz plik z danymi -> " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <Button text="Wybierz plik" fx:id="InputButton" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#chooseInputFile" />
+    <Label text=" " fx:id="FileLabel" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <Label text="Wybierz folder zapisu -> " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <Button text="Wybierz folder" fx:id="SaveDirectoryButton" GridPane.columnIndex="1" GridPane.rowIndex="2" onAction="#chooseDirectoryForSave" />
+    <Label text=" " fx:id="SaveDirectoryLabel" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+    <HBox spacing="10" alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="3">
+        <Button text="OK" fx:id="OKButton" onAction="#startComputing"/>
+    </HBox>
+</GridPane>
+
