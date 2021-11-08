@@ -82,6 +82,7 @@ public class Scene {
         }
     }
 
+    //TODO: Funkcja rozpoczynająca analizę (Wymyśl coś lepszego)
     @FXML
     protected void startComputing() throws Exception {
         setModeOfButtons(true);
@@ -105,6 +106,7 @@ public class Scene {
         a.setPrices(Prices, Bonus);
         a.setPropositions(Propositions);
         a.completeAdjacency();
+        a.StartAnalyzingGraph();
 
 
         endWriting(chosenDirectory);

@@ -1,8 +1,6 @@
 package com.example.Algorithms;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class Algorithm {
     public int numberOfUsers;
@@ -19,9 +17,16 @@ public class Algorithm {
     private final int Checked = 1;
     private final int Blocked = 2;
 
-    private LinkedList<Integer> Adjacency[];
+    private final LinkedList<Integer>[] Adjacency;
 
-    //Konstruktor klasu
+    private int ParticipantId = 0;
+    private LinkedList<Integer> ParticipantIDs = new LinkedList<Integer>();
+    private Map<Integer, int[]> checkedFlags = new TreeMap<Integer, int[]>();
+    private Map<Integer, ExchangePossibility> exchange = new TreeMap<Integer, ExchangePossibility>();
+
+    private int step = 0;
+
+    //Konstruktor klasy
     public Algorithm(int numberOfUsers, int numberOfSeries, int numberOfObjects){
         this.numberOfUsers = numberOfUsers;
         this.numberOfSeries = numberOfSeries;
@@ -31,8 +36,7 @@ public class Algorithm {
         Propositions = new Proposition[numberOfUsers];
 
         Adjacency = new LinkedList[numberOfUsers];
-        Flags = new int[numberOfUsers];
-        for (int i = 0; i < numberOfUsers; i++) Adjacency[i] = new LinkedList();
+        for (int i = 0; i < numberOfUsers; i++) Adjacency[i] = new LinkedList<Integer>();
     }
 
     //Setter przypisujący ceny
@@ -45,8 +49,8 @@ public class Algorithm {
     public void setPropositions(Proposition[] Propositions){
         this.Propositions = Propositions.clone();
         for(int i = 0; i < numberOfUsers; i++){
-            System.out.println(Arrays.deepToString(Propositions[i].Offer));
-            System.out.println(Arrays.deepToString(Propositions[i].Need));
+            //System.out.println(Arrays.deepToString(Propositions[i].Offer));
+            //System.out.println(Arrays.deepToString(Propositions[i].Need));
         }
     }
 
@@ -62,45 +66,97 @@ public class Algorithm {
         }
     }
 
+
+    public boolean checkIfEquals0(int[][] Objects){
+        for(int i = 0; i < numberOfSeries; i++){
+            for (int j = 0; i < numberOfObjects; i++){
+                if (Objects[i][j] != 0) return false;
+            }
+        }
+        return true;
+    }
+
+    //Funkcja sprawdzająca jakie przedmioty można wymienić między dwoma uczestnikami wymiany
+    public int[][] getCommonObjects(int[][] Need, int[][] Offer){
+        int[][] commonObjects = new int[numberOfSeries][numberOfObjects];
+        for(int i = 0; i < numberOfSeries; i++){
+            for(int j = 0; j < numberOfObjects; j++){
+                if(Need[i][j] >= Offer[i][j]) {
+                    commonObjects[i][j] = Offer[i][j];
+                }else if(Need[i][j] <= Offer[i][j]) {
+                    commonObjects[i][j] = Need[i][j];
+                }
+            }
+        }
+        return commonObjects;
+    }
+
     //Funkcja wyznaczająca wartość kolekcji
-    public float computeValue(int[][] Objects, boolean isBonus){
+    public float computeValue(int[][] Objects, int seriesCompleted){
         float value = 0;
         for (int i = 0; i < numberOfSeries; i++){
             float f = 0;
-            int fullCollections = 0;
             for(int j = 0; j < numberOfObjects; j++){
                 f += Prices[j] * Objects[i][j];
-                if(isBonus && (Objects[i][j] > fullCollections)) fullCollections = Objects[i][j];
             }
-            f += fullCollections * Bonus;
+            f += seriesCompleted * Bonus;
             value += f;
         }
         return value;
     }
 
+    //Wartość wyznaczająca ilość skompletowanych serii
+    public int howManySeriesCompleted(int[] Objects){
+        int seriesCompleted = 0;
+        for (int i = 0; i < numberOfObjects; i++){
+            if (Objects[i] > seriesCompleted) seriesCompleted = Objects[i];
+        }
+        return seriesCompleted;
+    }
+
+    //Funkcja rozpoczynająca analizę
+    public void StartAnalyzingGraph(){
+        ParticipantIDs.add(ParticipantId);
+
+        Flags = new int[numberOfUsers];
+
+        AnalyzeGraph(ParticipantId);
+    }
+
     //TODO: Dokończyć, tylko jak? Czy "participants" są potrzebni? Jak wyciągnąć z tego poszczególne dane?
     public void AnalyzeGraph(int i){
-        int s = 0;
-
         //LinkedList<Integer> participants = new LinkedList<Integer>();
+        int[][] iNeeds;
+        int[][] jNeeds;
 
         Flags[i] = Checked;
+        checkedFlags.put(step, Flags.clone());
         //participants.add(i);
+
 
         //while(participants.size() != 0){
             //i = participants.poll();
 
-            Iterator<Integer> iterator = Adjacency[i].listIterator();
-            while (iterator.hasNext()){
-                int j = iterator.next();
-                if(Flags[j] == notChecked){
-                    Flags[j] = Checked;
-                    //participants.add(j);
+        for (int j : Adjacency[i]) {
+            if (Flags[j] == notChecked) {
+                //Flags[j] = Checked;
+                ParticipantId = j;
+                step++;
+                iNeeds = getCommonObjects(Propositions[i].Need, Propositions[j].Offer).clone();
+                jNeeds = getCommonObjects(Propositions[j].Need, Propositions[i].Offer).clone();
 
-                    AnalyzeGraph(j);
+                System.out.println(Arrays.deepToString(iNeeds));
+                System.out.println(Arrays.deepToString(jNeeds));
+                System.out.println("###################");
 
-                }
+                ParticipantIDs.add(ParticipantId);
+                //participants.add(j);
+
+
+                AnalyzeGraph(j);
+
             }
+        }
 
         //}
 
