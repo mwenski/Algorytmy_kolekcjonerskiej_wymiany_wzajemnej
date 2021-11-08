@@ -21,7 +21,7 @@
     </HBox>
 </GridPane>-->
 
-<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Scene" alignment="center" hgap="10" vgap="10">
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Simulator.Scene" alignment="center" hgap="10" vgap="10">
     <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
     <Text text="Symulator" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3"/>
     <Label text="Wybierz plik z danymi -> " GridPane.columnIndex="0" GridPane.rowIndex="1"/>

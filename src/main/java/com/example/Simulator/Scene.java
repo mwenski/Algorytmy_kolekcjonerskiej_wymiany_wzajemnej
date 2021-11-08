@@ -1,7 +1,7 @@
 /*******************************
  Kontroler służący do sterowania logiką interfejsu symulatora
  *******************************/
-package com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
+package com.example.Simulator;
 
 import java.io.File;
 import java.lang.*;

@@ -76,7 +76,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej/com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Simulator
+                                com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej/com.example.Simulator.Simulator
                             </mainClass>
                         </configuration>
                     </execution>

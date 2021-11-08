@@ -2,7 +2,7 @@
  Główna klasa JavaFX,
  uruchamiająca cały symulator i aplikację okienkową zaprojektowaną w pliku FXML
  *******************************/
-package com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej;
+package com.example.Simulator;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
