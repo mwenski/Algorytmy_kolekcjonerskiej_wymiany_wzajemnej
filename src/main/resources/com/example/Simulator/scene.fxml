@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- Plik FXML, w którym zdefiniowany jest układ aplikacji okienkowej -->
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.*?>
 
-<!--<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.algorytmy_kolekcjonerskiej_wymiany_wzajemnej.Scene1" alignment="center" hgap="10" vgap="10">
-    <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
-    <Text text="Podaj podstawowe parametry" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
-    <Label text="Podaj liczbę kolekcjonerów:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="Collectors" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-    <Label text="Podaj liczbę przedmiotów wchodzących w skład typowej kolekcji:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField fx:id="Things" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-    <HBox spacing="10" alignment="bottom_right" GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <Button text="OK" fx:id="OKButton" onAction="#sendData"/>
+<GridPane alignment="center" hgap="10" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="com.example.Simulator.Scene">
+    <padding><Insets bottom="10" left="25" right="25" top="25" /></padding>
+    <Text text="Symulator" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+    <Label text="Wybierz plik z danymi -&gt; " GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <Button fx:id="InputButton" onAction="#chooseInputFile" text="Wybierz plik" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <Label fx:id="FileLabel" text=" " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+    <Label text="Wybierz folder zapisu -&gt; " GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <Button fx:id="SaveDirectoryButton" onAction="#chooseDirectoryForSave" text="Wybierz folder" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <Label fx:id="SaveDirectoryLabel" text=" " GridPane.columnIndex="2" GridPane.rowIndex="2" />
+    <HBox alignment="center" spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="3" GridPane.rowSpan="3">
+        <TextArea fx:id="LogArea" editable="false" focusTraversable="false" mouseTransparent="true" />
     </HBox>
-</GridPane>-->
-
-<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Simulator.Scene" alignment="center" hgap="10" vgap="10">
-    <padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
-    <Text text="Symulator" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3"/>
-    <Label text="Wybierz plik z danymi -> " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <Button text="Wybierz plik" fx:id="InputButton" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#chooseInputFile" />
-    <Label text=" " fx:id="FileLabel" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-    <Label text="Wybierz folder zapisu -> " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <Button text="Wybierz folder" fx:id="SaveDirectoryButton" GridPane.columnIndex="1" GridPane.rowIndex="2" onAction="#chooseDirectoryForSave" />
-    <Label text=" " fx:id="SaveDirectoryLabel" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-    <HBox spacing="10" alignment="center" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="3">
-        <Button text="OK" fx:id="OKButton" onAction="#startComputing"/>
+    <HBox alignment="center" spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="6">
+        <Button fx:id="OKButton" onAction="#startComputing" text="OK" />
     </HBox>
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
 </GridPane>
-

@@ -25,6 +25,11 @@ public class Scene {
     @FXML
     private Label FileLabel, SaveDirectoryLabel;
 
+    @FXML
+    private TextArea LogArea;
+
+    public static TextArea _LogArea;
+
     public File file = new File(System.getProperty("user.dir") + "\\Test.csv");
     public File selectedDirectory = new File(System.getProperty("user.home")); //PLIK
 
@@ -63,6 +68,11 @@ public class Scene {
         );
     }
 
+    //Funkcja aktualizująca informacje wyświetlające się w oknie
+    public static void updateLogArea(String log){
+        _LogArea.appendText(log + "\n");
+    }
+
     //Funkcja wywołująca okno dialogowe wyboru pliku odczytu
     @FXML
     protected void chooseInputFile(){
@@ -82,6 +92,11 @@ public class Scene {
         }
     }
 
+    @FXML
+    public void showLog(){
+        //LogArea.setText(Log + "\n");
+    }
+
     //TODO: Funkcja rozpoczynająca analizę (Wymyśl coś lepszego)
     @FXML
     protected void startComputing() throws Exception {
@@ -98,8 +113,10 @@ public class Scene {
 
         rw.endWriting(chosenDirectory);
          */
+        updateLogArea("Analiza rozpoczęta");
         readCSVFile(file, csvParser);
         prepareFile();
+
 
 
         Algorithm a = new Algorithm(numberOfUsers, numberOfSeries, numberOfObjects);
@@ -116,6 +133,7 @@ public class Scene {
 
     //Funkcja inicjalizująca, uruchamiana raz na początku
     public void initialize(){
+        _LogArea = LogArea;
         configureFileChooser(fileChooser);
         configureDirectoryChooser(directoryChooser);
         FileLabel.setText(chosenFile);

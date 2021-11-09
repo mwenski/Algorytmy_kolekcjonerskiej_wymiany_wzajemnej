@@ -32,11 +32,7 @@ public class WriteFile {
     //TODO: W pętli for odczyt pierwszej linii nie działa. Dlaczego?
     public static void writeFirstSheet(String[] line){
         Row row = sheet1.createRow(rSheet1);
-        System.out.println("p"+line[0]);
         for (int i = 0; i < 2 * numberOfObjects; i++){
-            System.out.println(line[0]);
-            System.out.println(line[i]);
-
             Cell cell = row.createCell(i);
             cell.setCellValue(line[i]);
         }

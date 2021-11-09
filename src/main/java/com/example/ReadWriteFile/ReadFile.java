@@ -79,21 +79,21 @@ public class ReadFile {
     }
 
     //Funkcja odczytująca część dotyczącą cen w pliku CSV i przypisująca wartości do tablicy cen
-    public static void setPrices(String[] data){
+    public static void setPrices(String[] line){
         for (int i = 0; i < numberOfObjects; i++){
-            Prices[i] = Float.parseFloat(data[i]);
+            Prices[i] = Float.parseFloat(line[i]);
         }
     }
 
     //Funkcja odczytująca część dotyczącą ofert i zapotrzebowań kolekcjonerów w pliku CSV i przypisująca wartości do poszczególnych tablic
-    public static void setOfferAndNeed(String[] data){
+    public static void setOfferAndNeed(String[] line){
         if (userId < numberOfUsers) {
             if (rowInProposition < numberOfSeries) {
                 for (int i = 0; i < 2 * numberOfObjects; i++) {
                     if (i < numberOfObjects) {
-                        Offer[rowInProposition][i] = Integer.parseInt(data[i]);
+                        Offer[rowInProposition][i] = Integer.parseInt(line[i]);
                     } else {
-                        Need[rowInProposition][i - numberOfObjects] = Integer.parseInt(data[i]);
+                        Need[rowInProposition][i - numberOfObjects] = Integer.parseInt(line[i]);
                     }
                 }
                 rowInProposition++;

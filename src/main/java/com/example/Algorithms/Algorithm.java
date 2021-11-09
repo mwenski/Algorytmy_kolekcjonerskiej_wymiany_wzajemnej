@@ -2,6 +2,8 @@ package com.example.Algorithms;
 
 import java.util.*;
 
+import static com.example.Simulator.Scene.updateLogArea;
+
 public class Algorithm {
     public int numberOfUsers;
     public int numberOfSeries;
@@ -18,6 +20,9 @@ public class Algorithm {
     private final int Blocked = 2;
 
     private final LinkedList<Integer>[] Adjacency;
+
+    public static String Log;
+
 
     private int ParticipantId = 0;
     private LinkedList<Integer> ParticipantIDs = new LinkedList<Integer>();
@@ -125,11 +130,14 @@ public class Algorithm {
 
     //TODO: Dokończyć, tylko jak? Czy "participants" są potrzebni? Jak wyciągnąć z tego poszczególne dane?
     public void AnalyzeGraph(int i){
+
         //LinkedList<Integer> participants = new LinkedList<Integer>();
         int[][] iNeeds;
         int[][] jNeeds;
 
         Flags[i] = Checked;
+
+        updateLogArea(String.valueOf(i));
         checkedFlags.put(step, Flags.clone());
         //participants.add(i);
 
