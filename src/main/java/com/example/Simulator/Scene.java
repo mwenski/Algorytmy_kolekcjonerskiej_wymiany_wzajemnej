@@ -20,7 +20,7 @@ import static com.example.ReadWriteFile.WriteFile.*;
 
 public class Scene {
     @FXML
-    private Button OKButton, InputButton, SaveDirectoryButton;
+    private Button StartButton, InputButton, SaveDirectoryButton;
 
     @FXML
     private Label FileLabel, SaveDirectoryLabel;
@@ -43,29 +43,9 @@ public class Scene {
 
     //Funkcja sterująca dostępnością przycisków w oknie symulatora
     public void setModeOfButtons(boolean b){
-        OKButton.setDisable(b);
+        StartButton.setDisable(b);
         InputButton.setDisable(b);
         SaveDirectoryButton.setDisable(b);
-    }
-
-    //Funkcja konfigurująca okno dialogowe wyboru pliku odczytu
-    private static void configureFileChooser(final FileChooser fileChooser){
-        fileChooser.setTitle("Wybierz plik wejściowy");
-        fileChooser.setInitialDirectory(
-                new File(System.getProperty("user.home"))
-        );
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Plik CSV", "*.csv"),
-                new FileChooser.ExtensionFilter("Wszystkie pliki", "*.*")
-        );
-    }
-
-    //Funkcja konfigurująca okno dialogowe wyboru folderu zapisu
-    private static void configureDirectoryChooser(final DirectoryChooser directoryChooser){
-        directoryChooser.setTitle("Wybierz folder zapisu");
-        directoryChooser.setInitialDirectory(
-                new File(System.getProperty("user.home"))
-        );
     }
 
     //Funkcja aktualizująca informacje wyświetlające się w oknie
@@ -82,6 +62,18 @@ public class Scene {
         }
     }
 
+    //Funkcja konfigurująca okno dialogowe wyboru pliku odczytu
+    private static void configureFileChooser(final FileChooser fileChooser){
+        fileChooser.setTitle("Wybierz plik wejściowy");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Plik CSV", "*.csv"),
+                new FileChooser.ExtensionFilter("Wszystkie pliki", "*.*")
+        );
+    }
+
     //Funkcja wywołująca okno dialogowe wyboru folderu zapisu
     @FXML
     protected void chooseDirectoryForSave(){
@@ -92,32 +84,21 @@ public class Scene {
         }
     }
 
-    @FXML
-    public void showLog(){
-        //LogArea.setText(Log + "\n");
+    //Funkcja konfigurująca okno dialogowe wyboru folderu zapisu
+    private static void configureDirectoryChooser(final DirectoryChooser directoryChooser){
+        directoryChooser.setTitle("Wybierz folder zapisu");
+        directoryChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
     }
 
     //TODO: Funkcja rozpoczynająca analizę (Wymyśl coś lepszego)
     @FXML
-    protected void startComputing() throws Exception {
+    protected void startAnalyze() throws Exception {
         setModeOfButtons(true);
-        /*
-        ReadWriteFile rw = new ReadWriteFile();
-        rw.readCSVFile(file, csvParser);
-        rw.prepareFile();
-
-        Algorithm a = new Algorithm(rw.numberOfUsers, rw.numberOfSeries, rw.numberOfObjects);
-        a.setPrices(rw.Prices, rw.Bonus);
-        a.setPropositions(rw.Propositions);
-        a.completeAdjacency();
-
-        rw.endWriting(chosenDirectory);
-         */
         updateLogArea("Analiza rozpoczęta");
         readCSVFile(file, csvParser);
         prepareFile();
-
-
 
         Algorithm a = new Algorithm(numberOfUsers, numberOfSeries, numberOfObjects);
         a.setPrices(Prices, Bonus);
@@ -125,9 +106,7 @@ public class Scene {
         a.completeAdjacency();
         a.StartAnalyzingGraph();
 
-
         endWriting(chosenDirectory);
-
         setModeOfButtons(false);
     }
 
@@ -139,36 +118,4 @@ public class Scene {
         FileLabel.setText(chosenFile);
         SaveDirectoryLabel.setText(chosenDirectory);
     }
-
-/*
-    @FXML
-    protected void sendData(ActionEvent event) throws Exception{
-        try {
-            int collectors = Integer.parseInt(this.Collectors.getText());
-            int things = Integer.parseInt(this.Things.getText());
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("scene2.fxml"));
-            Parent root = (Parent) loader.load();
-
-            Scene2 scene2 = loader.<Scene2>getController();
-            scene2.getData(collectors, things);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Symulator");
-            stage.show();
-
-            Stage thisStage = (Stage) OKButton.getScene().getWindow();
-            thisStage.close();
-        }catch (Exception e){
-            e.printStackTrace();
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("Błąd");
-            error.setHeaderText(null);
-            error.setContentText("Wprowadzono nieprawidłowe dane");
-            error.show();
-        }
-    }
-
- */
 }

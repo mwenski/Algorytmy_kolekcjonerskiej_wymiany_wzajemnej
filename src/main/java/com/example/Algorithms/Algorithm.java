@@ -21,9 +21,6 @@ public class Algorithm {
 
     private final LinkedList<Integer>[] Adjacency;
 
-    public static String Log;
-
-
     private int ParticipantId = 0;
     private LinkedList<Integer> ParticipantIDs = new LinkedList<Integer>();
     private Map<Integer, int[]> checkedFlags = new TreeMap<Integer, int[]>();
