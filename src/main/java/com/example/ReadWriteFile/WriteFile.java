@@ -21,31 +21,34 @@ public class WriteFile {
     private final static XSSFSheet sheet2 = workbook.createSheet("Dane wymiany");
     private final static XSSFSheet sheet3 = workbook.createSheet("Wartości zbiorów");
 
-    private static int rSheet1, rSheet2, rSheet3;
+    //Tablica numerów wierszy w arkuszach
+    private static int[] rSheet;
 
+    //Funkcja zerująca numery wierszy
     public static void setRSheets(){
-        rSheet1 = 0;
-        rSheet2 = 0;
-        rSheet3 = 0;
+        rSheet = new int[3];
     }
 
     //TODO: W pętli for odczyt pierwszej linii nie działa. Dlaczego?
     public static void writeFirstSheet(String[] line){
-        Row row = sheet1.createRow(rSheet1);
-        for (int i = 0; i < 2 * numberOfObjects; i++){
+        Row row = sheet1.createRow(rSheet[0]);
+        for (int i = 0; i < line.length; i++){
             Cell cell = row.createCell(i);
             cell.setCellValue(line[i]);
         }
-        rSheet1++;
+        rSheet[0]++;
     }
 
     //Funkcja służąca do przygotowania pliku zapisu
     public static void prepareFile(){
         int nS = 0;
         int nO = 0;
+        int x = 0;
+        for(int i = 0; i < numberOfSeries; i++) x += (numberOfObjects[i]);
 
-        Row row = sheet2.createRow(rSheet2);
-        for (int i = 0; i < numberOfSeries * numberOfObjects + 3; i++){
+
+        Row row = sheet2.createRow(rSheet[1]);
+        for (int i = 0; i < x + 3; i++){
             Cell cell = row.createCell(i);
             switch (i) {
                 case 0 -> cell.setCellValue("Nr wymiany");
@@ -54,7 +57,7 @@ public class WriteFile {
                 default -> {
                     cell.setCellValue("Seria: " + nS + "; Przedmiot: " + nO);
                     nO++;
-                    if (nO == numberOfObjects) {
+                    if (nO == numberOfObjects[nS]) {
                         nS++;
                         nO = 0;
                     }
@@ -62,9 +65,9 @@ public class WriteFile {
                 }
             }
         }
-        rSheet2++;
+        rSheet[1]++;
 
-        row = sheet3.createRow(rSheet3);
+        row = sheet3.createRow(rSheet[2]);
         for (int i = 0; i < numberOfUsers + 1; i++){
             Cell cell = row.createCell(i);
             if (i == 0) {
@@ -73,8 +76,26 @@ public class WriteFile {
                 cell.setCellValue("Kolekcjoner " + (i - 1));
             }
         }
-        rSheet3++;
+        rSheet[2]++;
     }
+
+
+    public static void writeValues(int nr, float[] Values){
+        Row row = sheet2.createRow(rSheet[2]);
+        for (int i = 0; i < Values.length + 1; i++){
+            Cell cell = row.createCell(i);
+            if (i == 0) {
+                cell.setCellValue(nr);
+            } else {
+                cell.setCellValue(Values[i - 1]);
+            }
+        }
+        rSheet[2]++;
+    };
+
+
+
+
 
     //Funkcja kończąca zapis pliku
     public static void endWriting(String chosenDirectory) throws Exception{

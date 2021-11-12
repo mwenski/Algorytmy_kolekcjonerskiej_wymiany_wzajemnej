@@ -1,63 +1,62 @@
+/*****************************
+ Klasa służąca do analizy problemu kolekcjonerskiej wymiany wzajemnej
+ *****************************/
 package com.example.Algorithms;
 
 import java.util.*;
 
+import static com.example.ReadWriteFile.WriteFile.writeValues;
 import static com.example.Simulator.Scene.updateLogArea;
 
-public class Algorithm {
+public class Algorithm extends Functions{
+
     public int numberOfUsers;
     public int numberOfSeries;
-    public int numberOfObjects;
+    public int[] numberOfObjects;
 
-    public float Bonus;
-    public float[] Prices;
+    public float[] Bonus;
+    public float[][] Prices;
 
     public Proposition[] Propositions;
+    public Possession[] Possessions;
+    private float[] Values;
 
-    public int[] Flags;
-    private final int notChecked = 0;
-    private final int Checked = 1;
-    private final int Blocked = 2;
+    public boolean[] Flags;
+    int id = 0;
 
     private final LinkedList<Integer>[] Adjacency;
 
     private int ParticipantId = 0;
-    private LinkedList<Integer> ParticipantIDs = new LinkedList<Integer>();
-    private Map<Integer, int[]> checkedFlags = new TreeMap<Integer, int[]>();
-    private Map<Integer, ExchangePossibility> exchange = new TreeMap<Integer, ExchangePossibility>();
-
-    private int step = 0;
 
     //Konstruktor klasy
-    public Algorithm(int numberOfUsers, int numberOfSeries, int numberOfObjects){
+    public Algorithm(int numberOfUsers, int numberOfSeries, int[] numberOfObjects){
         this.numberOfUsers = numberOfUsers;
         this.numberOfSeries = numberOfSeries;
-        this.numberOfObjects = numberOfObjects;
+        this.numberOfObjects = numberOfObjects.clone();
 
-        Prices = new float[numberOfObjects];
+        Prices = new float[numberOfSeries][];
+        Bonus = new float[numberOfSeries];
         Propositions = new Proposition[numberOfUsers];
+        Possessions = new Possession[numberOfUsers];
+        Values = new float[numberOfUsers];
 
         Adjacency = new LinkedList[numberOfUsers];
         for (int i = 0; i < numberOfUsers; i++) Adjacency[i] = new LinkedList<Integer>();
     }
 
     //Setter przypisujący ceny
-    public void setPrices(float[] Prices, float Bonus){
+    public void setPrices(float[][] Prices, float[] Bonus){
         this.Prices = Prices.clone();
-        this.Bonus = Bonus;
+        this.Bonus = Bonus.clone();
     }
 
     //Setter przypisujący oferty i potrzeby
     public void setPropositions(Proposition[] Propositions){
         this.Propositions = Propositions.clone();
-        for(int i = 0; i < numberOfUsers; i++){
-            //System.out.println(Arrays.deepToString(Propositions[i].Offer));
-            //System.out.println(Arrays.deepToString(Propositions[i].Need));
-        }
     }
 
     //Funkcja dodająca krawędzie w grafie
-    public void addEdge(int vertex1, int vertex2){ Adjacency[vertex1].add(vertex2); }
+    private void addEdge(int vertex1, int vertex2){ Adjacency[vertex1].add(vertex2); }
 
     //Funkcja kompletująca graf
     public void completeAdjacency(){
@@ -69,20 +68,12 @@ public class Algorithm {
     }
 
 
-    public boolean checkIfEquals0(int[][] Objects){
-        for(int i = 0; i < numberOfSeries; i++){
-            for (int j = 0; i < numberOfObjects; i++){
-                if (Objects[i][j] != 0) return false;
-            }
-        }
-        return true;
-    }
-
     //Funkcja sprawdzająca jakie przedmioty można wymienić między dwoma uczestnikami wymiany
-    public int[][] getCommonObjects(int[][] Need, int[][] Offer){
-        int[][] commonObjects = new int[numberOfSeries][numberOfObjects];
+    private int[][] getCommonObjects(int[][] Need, int[][] Offer){
+        int[][] commonObjects = new int[numberOfSeries][];
         for(int i = 0; i < numberOfSeries; i++){
-            for(int j = 0; j < numberOfObjects; j++){
+            commonObjects[i] = new int[numberOfObjects[i]];
+            for(int j = 0; j < numberOfObjects[i]; j++){
                 if(Need[i][j] >= Offer[i][j]) {
                     commonObjects[i][j] = Offer[i][j];
                 }else if(Need[i][j] <= Offer[i][j]) {
@@ -93,34 +84,45 @@ public class Algorithm {
         return commonObjects;
     }
 
+
+
     //Funkcja wyznaczająca wartość kolekcji
-    public float computeValue(int[][] Objects, int seriesCompleted){
+    private float computeValue(int[][] Objects){
         float value = 0;
         for (int i = 0; i < numberOfSeries; i++){
             float f = 0;
-            for(int j = 0; j < numberOfObjects; j++){
-                f += Prices[j] * Objects[i][j];
+            for(int j = 0; j < numberOfObjects[i]; j++){
+                f += Prices[i][j] * Objects[i][j];
             }
-            f += seriesCompleted * Bonus;
+            f += getMinimumValue(Objects[i]) * Bonus[i];
             value += f;
         }
         return value;
     }
 
-    //Wartość wyznaczająca ilość skompletowanych serii
-    public int howManySeriesCompleted(int[] Objects){
-        int seriesCompleted = 0;
-        for (int i = 0; i < numberOfObjects; i++){
-            if (Objects[i] > seriesCompleted) seriesCompleted = Objects[i];
+    public void computeWhatDoesTheyHave(){
+        int toComplete;
+        for (int i = 0; i < numberOfUsers; i++){
+             int[][] Have = new int[numberOfSeries][];
+             for (int j = 0; j < numberOfSeries; j++) {
+                 Have[j] = new int[numberOfObjects[j]];
+                 toComplete = getMaximumValue(Propositions[i].Need[j]);
+                 for(int k = 0; k < numberOfObjects[j]; k++) Have[j][k] = toComplete - Propositions[i].Need[j][k];
+             }
+             //Possessions[i].setHave(Have);
+             //Possessions[i].setHaveAll();
+            Possessions[i] = new Possession(Have, sumTwoArrays(Have, Propositions[i].Offer));
+             System.out.println(i + ": " + Arrays.deepToString(Have));
         }
-        return seriesCompleted;
     }
 
     //Funkcja rozpoczynająca analizę
     public void StartAnalyzingGraph(){
-        ParticipantIDs.add(ParticipantId);
-
-        Flags = new int[numberOfUsers];
+        Flags = new boolean[numberOfUsers];
+        for(int i = 0; i < numberOfUsers; i++){
+            Values[i] = computeValue(Possessions[i].HaveAll);
+        }
+        writeValues(id, Values);
 
         AnalyzeGraph(ParticipantId);
     }
@@ -132,10 +134,9 @@ public class Algorithm {
         int[][] iNeeds;
         int[][] jNeeds;
 
-        Flags[i] = Checked;
+        Flags[i] = true;
 
         updateLogArea(String.valueOf(i));
-        checkedFlags.put(step, Flags.clone());
         //participants.add(i);
 
 
@@ -143,18 +144,16 @@ public class Algorithm {
             //i = participants.poll();
 
         for (int j : Adjacency[i]) {
-            if (Flags[j] == notChecked) {
+            if (!Flags[j]) {
                 //Flags[j] = Checked;
                 ParticipantId = j;
-                step++;
+                System.out.println("###################");
                 iNeeds = getCommonObjects(Propositions[i].Need, Propositions[j].Offer).clone();
                 jNeeds = getCommonObjects(Propositions[j].Need, Propositions[i].Offer).clone();
 
                 System.out.println(Arrays.deepToString(iNeeds));
                 System.out.println(Arrays.deepToString(jNeeds));
-                System.out.println("###################");
 
-                ParticipantIDs.add(ParticipantId);
                 //participants.add(j);
 
 

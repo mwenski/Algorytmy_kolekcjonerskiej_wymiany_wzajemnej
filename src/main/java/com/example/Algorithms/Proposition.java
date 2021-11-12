@@ -13,14 +13,4 @@ public class Proposition {
     }
 }
 
-class ExchangePossibility{
-    public int GiverId;
-    public int GetterId;
-    public Proposition GivenObjects;
 
-    public ExchangePossibility(int GiverId, int GetterId, Proposition GivenObjects){
-        this.GiverId = GiverId;
-        this.GetterId = GetterId;
-        this.GivenObjects = GivenObjects;
-    }
-}
