@@ -45,11 +45,7 @@ public class Algorithm extends Functions{
         Possessions = new Possession[numberOfUsers];
         Values = new float[numberOfUsers];
 
-        //Adjacency = new LinkedList[numberOfUsers];
-        for (int i = 0; i < numberOfUsers; i++) {
-          //  Adjacency[i] = new LinkedList<Integer>();
-            Queue.add(i);
-        }
+        for (int i = 0; i < numberOfUsers; i++) Queue.add(i);
     }
 
     //Setter przypisujący ceny
@@ -62,22 +58,6 @@ public class Algorithm extends Functions{
     public void setPropositions(Proposition[] Propositions){
         this.Propositions = Propositions.clone();
     }
-
-    //Funkcja dodająca krawędzie w grafie
-    //private void addEdge(int vertex1, int vertex2){ Adjacency[vertex1].add(vertex2); }
-
-    /*
-    //Funkcja kompletująca graf
-    public void completeAdjacency(){
-        for (int i = 0; i < numberOfUsers; i++){
-            for (int j = 0; j < numberOfUsers; j++){
-                if(i != j) addEdge(i, j);
-            }
-        }
-    }
-
-     */
-
 
     //Funkcja sprawdzająca jakie przedmioty można wymienić między dwoma uczestnikami wymiany
     private int[][] getCommonObjects(int[][] Need, int[][] Offer){
@@ -94,8 +74,6 @@ public class Algorithm extends Functions{
         }
         return commonObjects;
     }
-
-
 
     //Funkcja wyznaczająca wartość kolekcji
     private float computeValue(int[][] Objects){
@@ -126,48 +104,48 @@ public class Algorithm extends Functions{
     }
 
     public void MakeExchange(){
-            ExchangeProposition eP = null;
-            float v1 = 0;
-            float v2 = 0;
-            int[][] iNeeds, jNeeds;
-            float iValues, jValues;
-            int i, j;
+        ExchangeProposition eP = null;
+        float v1 = 0;
+        float v2 = 0;
+        int[][] iNeeds, jNeeds;
+        float iValues, jValues;
+        int i, j;
 
-            for (ExchangeProposition exchangeProposition : ExchangePropositions) {
-                i = exchangeProposition.Participant1;
-                j = exchangeProposition.Participant2;
-                iNeeds = exchangeProposition.Proposition1.clone();
-                jNeeds = exchangeProposition.Proposition2.clone();
-                iValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone()) - computeValue(Possessions[i].HaveAll);
-                jValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone()) - computeValue(Possessions[j].HaveAll);
-                if ((iValues + jValues) > (v1 + v2)) {
-                    eP = new ExchangeProposition(i, iNeeds, j, jNeeds);
-                }
+        for (ExchangeProposition exchangeProposition : ExchangePropositions) {
+            i = exchangeProposition.Participant1;
+            j = exchangeProposition.Participant2;
+            iNeeds = exchangeProposition.Proposition1.clone();
+            jNeeds = exchangeProposition.Proposition2.clone();
+            iValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone()) - computeValue(Possessions[i].HaveAll);
+            jValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone()) - computeValue(Possessions[j].HaveAll);
+            if ((iValues + jValues) > (v1 + v2)) {
+                eP = new ExchangeProposition(i, iNeeds, j, jNeeds);
             }
+        }
 
-            if (eP != null) {
-                i = eP.Participant1;
-                j = eP.Participant2;
-                iNeeds = eP.Proposition1.clone();
-                jNeeds = eP.Proposition2.clone();
+        if (eP != null) {
+            i = eP.Participant1;
+            j = eP.Participant2;
+            iNeeds = eP.Proposition1.clone();
+            jNeeds = eP.Proposition2.clone();
 
-                writeExchange(idExchange, i, j, iNeeds);
-                writeExchange(idExchange, j, i, jNeeds);
+            writeExchange(idExchange, i, j, iNeeds);
+            writeExchange(idExchange, j, i, jNeeds);
 
-                Possessions[i].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone();
-                Possessions[j].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone();
-                Propositions[i].Need = subtractTwoArrays(Propositions[i].Need, iNeeds).clone();
-                Propositions[j].Need = subtractTwoArrays(Propositions[j].Need, jNeeds).clone();
-                Propositions[i].Offer = subtractTwoArrays(Propositions[i].Offer, jNeeds).clone();
-                Propositions[j].Offer = subtractTwoArrays(Propositions[j].Offer, iNeeds).clone();
+            Possessions[i].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone();
+            Possessions[j].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone();
+            Propositions[i].Need = subtractTwoArrays(Propositions[i].Need, iNeeds).clone();
+            Propositions[j].Need = subtractTwoArrays(Propositions[j].Need, jNeeds).clone();
+            Propositions[i].Offer = subtractTwoArrays(Propositions[i].Offer, jNeeds).clone();
+            Propositions[j].Offer = subtractTwoArrays(Propositions[j].Offer, iNeeds).clone();
 
-                ComputeValues();
+            ComputeValues();
 
-                Queue.remove(Integer.valueOf(i));
-                Queue.remove(Integer.valueOf(j));
-                Queue.add(i);
-                Queue.add(j);
-            }
+            Queue.remove(Integer.valueOf(i));
+            Queue.remove(Integer.valueOf(j));
+            Queue.add(i);
+            Queue.add(j);
+        }
     }
 
     //Funkcja wyznaczająca wartości początkowe wszystkich kolekcji
@@ -194,22 +172,11 @@ public class Algorithm extends Functions{
 
         Flags[i] = true;
 
-        updateLogArea(String.valueOf(i));
-        //participants.add(i);
-
-
-        //while(participants.size() != 0){
-            //i = participants.poll();
-
         for (int q : Queue) {
             int j = Queue.get(q);
             if (!Flags[j]) {
-
-
                 Flags[j] = true;
-                //ParticipantId = j;
-                updateLogArea(String.valueOf(j));
-
+                updateLogArea("Analiza kolekcjonera " + i + " oraz " + j);
 
                 System.out.println("###################");
                 iNeeds = getCommonObjects(Propositions[i].Need, Propositions[j].Offer).clone();
@@ -232,20 +199,11 @@ public class Algorithm extends Functions{
             }
         }
 
-
         if(!ExchangePropositions.isEmpty()){
             MakeExchange();
             StartAnalyzingGraph(Queue.size() - 1);
         }else{
             if((i - 1) >= 0) StartAnalyzingGraph(i - 1);
         }
-
-
-
-        //}
-
     }
-
-
-
 }
