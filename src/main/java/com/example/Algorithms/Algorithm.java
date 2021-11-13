@@ -23,13 +23,13 @@ public class Algorithm extends Functions{
     //Tablice opisujące to, co dany kolekcjoner posiada
     public Proposition[] Propositions;
     public Possession[] Possessions;
-    private float[] Values;
+    private final float[] Values;
 
     public boolean[] Flags;
     int idExchange = 0;
 
     //private final LinkedList<Integer>[] Adjacency;
-    private LinkedList<Integer> Queue = new LinkedList<Integer>();
+    private final LinkedList<Integer> Queue = new LinkedList<>();
     private ArrayList<ExchangeProposition> ExchangePropositions;
 
 
@@ -126,46 +126,48 @@ public class Algorithm extends Functions{
     }
 
     public void MakeExchange(){
-        ExchangeProposition eP = null;
-        float v1 = 0;
-        float v2 = 0;
-        int[][] iNeeds, jNeeds;
-        float iValues, jValues;
-        int i, j;
+            ExchangeProposition eP = null;
+            float v1 = 0;
+            float v2 = 0;
+            int[][] iNeeds, jNeeds;
+            float iValues, jValues;
+            int i, j;
 
-        for (int k = 0; k < ExchangePropositions.size(); k++){
-            i = ExchangePropositions.get(k).Participant1;
-            j = ExchangePropositions.get(k).Participant2;
-            iNeeds = ExchangePropositions.get(k).Proposition1.clone();
-            jNeeds = ExchangePropositions.get(k).Proposition2.clone();
-            iValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone()) - computeValue(Possessions[i].HaveAll);
-            jValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone()) - computeValue(Possessions[j].HaveAll);
-            if ((iValues + jValues) > (v1 + v2)){
-                eP = new ExchangeProposition(i, iNeeds, j, jNeeds);
+            for (ExchangeProposition exchangeProposition : ExchangePropositions) {
+                i = exchangeProposition.Participant1;
+                j = exchangeProposition.Participant2;
+                iNeeds = exchangeProposition.Proposition1.clone();
+                jNeeds = exchangeProposition.Proposition2.clone();
+                iValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone()) - computeValue(Possessions[i].HaveAll);
+                jValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone()) - computeValue(Possessions[j].HaveAll);
+                if ((iValues + jValues) > (v1 + v2)) {
+                    eP = new ExchangeProposition(i, iNeeds, j, jNeeds);
+                }
             }
-        }
 
-        i = eP.Participant1;
-        j = eP.Participant2;
-        iNeeds = eP.Proposition1.clone();
-        jNeeds = eP.Proposition2.clone();
+            if (eP != null) {
+                i = eP.Participant1;
+                j = eP.Participant2;
+                iNeeds = eP.Proposition1.clone();
+                jNeeds = eP.Proposition2.clone();
 
-        writeExchange(idExchange, i, j, iNeeds);
-        writeExchange(idExchange, j, i, jNeeds);
+                writeExchange(idExchange, i, j, iNeeds);
+                writeExchange(idExchange, j, i, jNeeds);
 
-        Possessions[i].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone();
-        Possessions[j].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone();
-        Propositions[i].Need = subtractTwoArrays(Propositions[i].Need, iNeeds).clone();
-        Propositions[j].Need = subtractTwoArrays(Propositions[j].Need, jNeeds).clone();
-        Propositions[i].Offer = subtractTwoArrays(Propositions[i].Offer, jNeeds).clone();
-        Propositions[j].Offer = subtractTwoArrays(Propositions[j].Offer, iNeeds).clone();
+                Possessions[i].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone();
+                Possessions[j].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone();
+                Propositions[i].Need = subtractTwoArrays(Propositions[i].Need, iNeeds).clone();
+                Propositions[j].Need = subtractTwoArrays(Propositions[j].Need, jNeeds).clone();
+                Propositions[i].Offer = subtractTwoArrays(Propositions[i].Offer, jNeeds).clone();
+                Propositions[j].Offer = subtractTwoArrays(Propositions[j].Offer, iNeeds).clone();
 
-        ComputeValues();
+                ComputeValues();
 
-        Queue.remove(Integer.valueOf(i));
-        Queue.remove(Integer.valueOf(j));
-        Queue.add(i);
-        Queue.add(j);
+                Queue.remove(Integer.valueOf(i));
+                Queue.remove(Integer.valueOf(j));
+                Queue.add(i);
+                Queue.add(j);
+            }
     }
 
     //Funkcja wyznaczająca wartości początkowe wszystkich kolekcji
@@ -186,10 +188,6 @@ public class Algorithm extends Functions{
 
     //TODO: Dokończyć, tylko jak? Czy "participants" są potrzebni? Jak wyciągnąć z tego poszczególne dane?
     public void AnalyzeGraph(int i){
-        int[][] iAfterGive;
-        int[][] jAfterGive;
-        int[][] iAfterGet;
-        int[][] jAfterGet;
         int[][] iNeeds;
         int[][] jNeeds;
         float iValues, jValues;
@@ -221,10 +219,6 @@ public class Algorithm extends Functions{
                 System.out.println(Arrays.deepToString(iNeeds));
                 System.out.println(Arrays.deepToString(jNeeds));
 
-                iAfterGive = subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone();
-                jAfterGive = subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone();
-                iAfterGet = sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone();
-                jAfterGet = sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone();
                 iValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone());
                 jValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone());
 

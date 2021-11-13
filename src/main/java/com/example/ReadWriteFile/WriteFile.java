@@ -91,7 +91,7 @@ public class WriteFile {
             }
         }
         rSheet[2]++;
-    };
+    }
 
     //Funkcja zapisująca wymiany do arkusza
     public static void writeExchange(int nr, int p1, int p2, int[][] Object){
@@ -119,7 +119,7 @@ public class WriteFile {
             }
         }
         rSheet[1]++;
-    };
+    }
 
 
 

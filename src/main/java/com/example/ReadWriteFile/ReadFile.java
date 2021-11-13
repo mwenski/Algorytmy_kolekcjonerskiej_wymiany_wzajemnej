@@ -7,14 +7,10 @@ import com.example.Algorithms.Proposition;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.opencsv.enums.CSVReaderNullFieldIndicator;
 import javafx.scene.control.Alert;
 
 import java.io.File;
 import java.io.FileReader;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.example.ReadWriteFile.WriteFile.*;
