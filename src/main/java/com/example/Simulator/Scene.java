@@ -98,20 +98,19 @@ public class Scene {
         setModeOfButtons(true);
         updateLogArea("Analiza rozpoczęta");
         readCSVFile(file, csvParser);
-        //show();
         prepareFile();
 
 
         Algorithm a = new Algorithm(numberOfUsers, numberOfSeries, numberOfObjects);
         a.setPrices(Prices, Bonus);
         a.setPropositions(Propositions);
-        //a.completeAdjacency();
         a.computeWhatDoesTheyHave();
         a.ComputeValues();
         a.StartAnalyzingGraph(numberOfUsers - 1);
 
 
         endWriting(chosenDirectory);
+        updateLogArea("Analiza zakończona");
         setModeOfButtons(false);
     }
 

@@ -94,7 +94,7 @@ public class WriteFile {
     }
 
     //Funkcja zapisująca wymiany do arkusza
-    public static void writeExchange(int nr, int p1, int p2, int[][] Object){
+    public static void writeExchange(int nr, int p1, int p2, int[][] Objects){
         int nS = 0;
         int nO = 0;
         int x = 0;
@@ -108,7 +108,7 @@ public class WriteFile {
                 case 1 -> cell.setCellValue(p1);
                 case 2 -> cell.setCellValue(p2);
                 default -> {
-                    cell.setCellValue(Object[nS][nO]);
+                    cell.setCellValue(Objects[nS][nO]);
                     nO++;
                     if (nO == numberOfObjects[nS]) {
                         nS++;

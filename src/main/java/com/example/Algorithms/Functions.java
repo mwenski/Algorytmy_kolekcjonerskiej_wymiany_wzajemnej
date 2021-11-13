@@ -1,22 +1,8 @@
 package com.example.Algorithms;
 
 public class Functions {
-    public static int[] sumTwoArrays(int[] tab1, int[] tab2){
-        int[] i = new int[tab1.length];
-        for (int j = 0; j < tab1.length; j++){
-            i[j] = tab1[j] + tab2[j];
-        }
-        return i;
-    }
 
-    public static int[] subtractTwoArrays(int[] tab1, int[] tab2){
-        int[] i = new int[tab1.length];
-        for (int j = 0; j < tab1.length; j++){
-            i[j] = tab1[j] - tab2[j];
-        }
-        return i;
-    }
-
+    //Funkcja służąca do dodawania tablic dwuwymiarowych
     public static int[][] sumTwoArrays(int[][] tab1, int[][] tab2){
         int[][] i = new int[tab1.length][];
         for (int j = 0; j < tab1.length; j++){
@@ -28,6 +14,7 @@ public class Functions {
         return i;
     }
 
+    //Funkcja służąca do odejmowania tablic dwuwymierowych
     public static int[][] subtractTwoArrays(int[][] tab1, int[][] tab2){
         int[][] i = new int[tab1.length][];
         for (int j = 0; j < tab1.length; j++){
@@ -37,14 +24,6 @@ public class Functions {
             }
         }
         return i;
-    }
-
-    public static void increaseInArray(int[] tab1, int[] tab2, int i){
-        tab2[i]++;
-        if (tab2[i] > tab1[i]){
-            tab2[i] = 0;
-            increaseInArray(tab1, tab2, i+1);
-        }
     }
 
     //Wartość wyznaczająca największą liczbę w tablicy

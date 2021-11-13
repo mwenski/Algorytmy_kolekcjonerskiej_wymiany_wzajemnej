@@ -8,12 +8,4 @@ public class Possession {
         this.Have = Have.clone();
         this.HaveAll = HaveAll.clone();
     }
-
-    public void setHaveAll() {
-
-    }
-
-    public void setHave() {
-
-    }
 }
