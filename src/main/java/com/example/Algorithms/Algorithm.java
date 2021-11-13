@@ -5,28 +5,33 @@ package com.example.Algorithms;
 
 import java.util.*;
 
+import static com.example.ReadWriteFile.WriteFile.writeExchange;
 import static com.example.ReadWriteFile.WriteFile.writeValues;
 import static com.example.Simulator.Scene.updateLogArea;
 
 public class Algorithm extends Functions{
 
+    //Zmienne opisujące podstawowe informacje
     public int numberOfUsers;
     public int numberOfSeries;
     public int[] numberOfObjects;
 
+    //Zmienne opisujące ceny
     public float[] Bonus;
     public float[][] Prices;
 
+    //Tablice opisujące to, co dany kolekcjoner posiada
     public Proposition[] Propositions;
     public Possession[] Possessions;
     private float[] Values;
 
     public boolean[] Flags;
-    int id = 0;
+    int idExchange = 0;
 
-    private final LinkedList<Integer>[] Adjacency;
+    //private final LinkedList<Integer>[] Adjacency;
+    private LinkedList<Integer> Queue = new LinkedList<Integer>();
+    private ArrayList<ExchangeProposition> ExchangePropositions;
 
-    private int ParticipantId = 0;
 
     //Konstruktor klasy
     public Algorithm(int numberOfUsers, int numberOfSeries, int[] numberOfObjects){
@@ -40,8 +45,11 @@ public class Algorithm extends Functions{
         Possessions = new Possession[numberOfUsers];
         Values = new float[numberOfUsers];
 
-        Adjacency = new LinkedList[numberOfUsers];
-        for (int i = 0; i < numberOfUsers; i++) Adjacency[i] = new LinkedList<Integer>();
+        //Adjacency = new LinkedList[numberOfUsers];
+        for (int i = 0; i < numberOfUsers; i++) {
+          //  Adjacency[i] = new LinkedList<Integer>();
+            Queue.add(i);
+        }
     }
 
     //Setter przypisujący ceny
@@ -56,8 +64,9 @@ public class Algorithm extends Functions{
     }
 
     //Funkcja dodająca krawędzie w grafie
-    private void addEdge(int vertex1, int vertex2){ Adjacency[vertex1].add(vertex2); }
+    //private void addEdge(int vertex1, int vertex2){ Adjacency[vertex1].add(vertex2); }
 
+    /*
     //Funkcja kompletująca graf
     public void completeAdjacency(){
         for (int i = 0; i < numberOfUsers; i++){
@@ -66,6 +75,8 @@ public class Algorithm extends Functions{
             }
         }
     }
+
+     */
 
 
     //Funkcja sprawdzająca jakie przedmioty można wymienić między dwoma uczestnikami wymiany
@@ -109,30 +120,79 @@ public class Algorithm extends Functions{
                  toComplete = getMaximumValue(Propositions[i].Need[j]);
                  for(int k = 0; k < numberOfObjects[j]; k++) Have[j][k] = toComplete - Propositions[i].Need[j][k];
              }
-             //Possessions[i].setHave(Have);
-             //Possessions[i].setHaveAll();
-            Possessions[i] = new Possession(Have, sumTwoArrays(Have, Propositions[i].Offer));
-             System.out.println(i + ": " + Arrays.deepToString(Have));
+             Possessions[i] = new Possession(Have, sumTwoArrays(Have, Propositions[i].Offer));
+             System.out.println(i + ": " + Arrays.deepToString(Possessions[i].HaveAll));
         }
     }
 
-    //Funkcja rozpoczynająca analizę
-    public void StartAnalyzingGraph(){
-        Flags = new boolean[numberOfUsers];
+    public void MakeExchange(){
+        ExchangeProposition eP = null;
+        float v1 = 0;
+        float v2 = 0;
+        int[][] iNeeds, jNeeds;
+        float iValues, jValues;
+        int i, j;
+
+        for (int k = 0; k < ExchangePropositions.size(); k++){
+            i = ExchangePropositions.get(k).Participant1;
+            j = ExchangePropositions.get(k).Participant2;
+            iNeeds = ExchangePropositions.get(k).Proposition1.clone();
+            jNeeds = ExchangePropositions.get(k).Proposition2.clone();
+            iValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone()) - computeValue(Possessions[i].HaveAll);
+            jValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone()) - computeValue(Possessions[j].HaveAll);
+            if ((iValues + jValues) > (v1 + v2)){
+                eP = new ExchangeProposition(i, iNeeds, j, jNeeds);
+            }
+        }
+
+        i = eP.Participant1;
+        j = eP.Participant2;
+        iNeeds = eP.Proposition1.clone();
+        jNeeds = eP.Proposition2.clone();
+
+        writeExchange(idExchange, i, j, iNeeds);
+        writeExchange(idExchange, j, i, jNeeds);
+
+        Possessions[i].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone();
+        Possessions[j].HaveAll = sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone();
+        Propositions[i].Need = subtractTwoArrays(Propositions[i].Need, iNeeds).clone();
+        Propositions[j].Need = subtractTwoArrays(Propositions[j].Need, jNeeds).clone();
+        Propositions[i].Offer = subtractTwoArrays(Propositions[i].Offer, jNeeds).clone();
+        Propositions[j].Offer = subtractTwoArrays(Propositions[j].Offer, iNeeds).clone();
+
+        ComputeValues();
+
+        Queue.remove(Integer.valueOf(i));
+        Queue.remove(Integer.valueOf(j));
+        Queue.add(i);
+        Queue.add(j);
+    }
+
+    //Funkcja wyznaczająca wartości początkowe wszystkich kolekcji
+    public void ComputeValues(){
         for(int i = 0; i < numberOfUsers; i++){
             Values[i] = computeValue(Possessions[i].HaveAll);
         }
-        writeValues(id, Values);
+        writeValues(idExchange, Values);
+        idExchange++;
+    }
 
-        AnalyzeGraph(ParticipantId);
+    //Funkcja rozpoczynająca analizę
+    public void StartAnalyzingGraph(int s){
+        Flags = new boolean[numberOfUsers];
+        ExchangePropositions = new ArrayList<>();
+        AnalyzeGraph(s);
     }
 
     //TODO: Dokończyć, tylko jak? Czy "participants" są potrzebni? Jak wyciągnąć z tego poszczególne dane?
     public void AnalyzeGraph(int i){
-
-        //LinkedList<Integer> participants = new LinkedList<Integer>();
+        int[][] iAfterGive;
+        int[][] jAfterGive;
+        int[][] iAfterGet;
+        int[][] jAfterGet;
         int[][] iNeeds;
         int[][] jNeeds;
+        float iValues, jValues;
 
         Flags[i] = true;
 
@@ -143,24 +203,50 @@ public class Algorithm extends Functions{
         //while(participants.size() != 0){
             //i = participants.poll();
 
-        for (int j : Adjacency[i]) {
+        for (int q : Queue) {
+            int j = Queue.get(q);
             if (!Flags[j]) {
-                //Flags[j] = Checked;
-                ParticipantId = j;
+
+
+                Flags[j] = true;
+                //ParticipantId = j;
+                updateLogArea(String.valueOf(j));
+
+
                 System.out.println("###################");
                 iNeeds = getCommonObjects(Propositions[i].Need, Propositions[j].Offer).clone();
                 jNeeds = getCommonObjects(Propositions[j].Need, Propositions[i].Offer).clone();
 
+                System.out.println(i + " oraz " + j);
                 System.out.println(Arrays.deepToString(iNeeds));
                 System.out.println(Arrays.deepToString(jNeeds));
 
-                //participants.add(j);
+                iAfterGive = subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone();
+                jAfterGive = subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone();
+                iAfterGet = sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone();
+                jAfterGet = sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone();
+                iValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[i].HaveAll, jNeeds).clone(), iNeeds).clone());
+                jValues = computeValue(sumTwoArrays(subtractTwoArrays(Possessions[j].HaveAll, iNeeds).clone(), jNeeds).clone());
 
-
-                AnalyzeGraph(j);
-
+                if(iValues > Values[i] && jValues > Values[j]) {
+                    System.out.println(iValues + "a" + Values[i]);
+                    System.out.println(jValues + "a" + Values[j]);
+                    updateLogArea("Znaleziono możliwość wymiany między " + i + " a " + j);
+                    System.out.println("Znaleziono możliwość wymiany między " + i + " a " + j);
+                    ExchangePropositions.add(new ExchangeProposition(i, iNeeds, j, jNeeds));
+                }
             }
         }
+
+
+        if(!ExchangePropositions.isEmpty()){
+            MakeExchange();
+            StartAnalyzingGraph(Queue.size() - 1);
+        }else{
+            if((i - 1) >= 0) StartAnalyzingGraph(i - 1);
+        }
+
+
 
         //}
 

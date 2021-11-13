@@ -79,9 +79,9 @@ public class WriteFile {
         rSheet[2]++;
     }
 
-
+    //Funkcja zapisująca wartości do arkusza
     public static void writeValues(int nr, float[] Values){
-        Row row = sheet2.createRow(rSheet[2]);
+        Row row = sheet3.createRow(rSheet[2]);
         for (int i = 0; i < Values.length + 1; i++){
             Cell cell = row.createCell(i);
             if (i == 0) {
@@ -93,6 +93,33 @@ public class WriteFile {
         rSheet[2]++;
     };
 
+    //Funkcja zapisująca wymiany do arkusza
+    public static void writeExchange(int nr, int p1, int p2, int[][] Object){
+        int nS = 0;
+        int nO = 0;
+        int x = 0;
+        for(int i = 0; i < numberOfSeries; i++) x += (numberOfObjects[i]);
+
+        Row row = sheet2.createRow(rSheet[1]);
+        for (int i = 0; i < x + 3; i++){
+            Cell cell = row.createCell(i);
+            switch (i) {
+                case 0 -> cell.setCellValue(nr);
+                case 1 -> cell.setCellValue(p1);
+                case 2 -> cell.setCellValue(p2);
+                default -> {
+                    cell.setCellValue(Object[nS][nO]);
+                    nO++;
+                    if (nO == numberOfObjects[nS]) {
+                        nS++;
+                        nO = 0;
+                    }
+                    if (nS == numberOfSeries) nS = 0;
+                }
+            }
+        }
+        rSheet[1]++;
+    };
 
 
 

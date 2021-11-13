@@ -105,9 +105,10 @@ public class Scene {
         Algorithm a = new Algorithm(numberOfUsers, numberOfSeries, numberOfObjects);
         a.setPrices(Prices, Bonus);
         a.setPropositions(Propositions);
-        a.completeAdjacency();
+        //a.completeAdjacency();
         a.computeWhatDoesTheyHave();
-        a.StartAnalyzingGraph();
+        a.ComputeValues();
+        a.StartAnalyzingGraph(numberOfUsers - 1);
 
 
         endWriting(chosenDirectory);

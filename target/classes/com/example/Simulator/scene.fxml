@@ -14,7 +14,7 @@
     <Label text="Wybierz folder zapisu -&gt; " GridPane.columnIndex="0" GridPane.rowIndex="1" />
     <Button fx:id="SaveDirectoryButton" onAction="#chooseDirectoryForSave" text="Wybierz folder" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     <Label fx:id="SaveDirectoryLabel" text=" " GridPane.columnIndex="2" GridPane.rowIndex="1" />
-    <TextArea fx:id="LogArea" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="3" />
+    <TextArea fx:id="LogArea" editable="false" focusTraversable="false"  mouseTransparent="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="3" />
     <HBox alignment="center" spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="5">
         <Button fx:id="StartButton" onAction="#startAnalyze" text="Rozpocznij analizę" />
     </HBox>
