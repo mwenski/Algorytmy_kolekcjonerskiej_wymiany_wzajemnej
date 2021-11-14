@@ -1,3 +1,8 @@
+/*****************************
+ Klasa zawierająca informacje na temat posiadanych
+ przez kolekcjonera przedmiotów
+ *****************************/
+
 package com.example.Algorithms;
 
 public class Possession {

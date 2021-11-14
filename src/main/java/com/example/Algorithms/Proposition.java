@@ -1,5 +1,6 @@
 /*****************************
- Klasa zawierająca informacje na temat oferty i potrzeb kolekcjonera
+ Klasa zawierająca informacje na temat wyszukiwanych
+ i oferowanych przedmiotów kolekcjonera
  *****************************/
 package com.example.Algorithms;
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class Simulator extends Application {
 
-    //TODO: Funkcja wywołująca plik ze zdefiniowanym oknem symulatora (wymyśl lepszy opis)
+    //Funkcja wywołująca plik ze zdefiniowanym układem symulatora
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Simulator.class.getResource("scene.fxml"));

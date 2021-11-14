@@ -29,7 +29,7 @@ public class WriteFile {
         rSheet = new int[3];
     }
 
-    //TODO: W pętli for odczyt pierwszej linii nie działa. Dlaczego?
+    //Funkcja służąca do zapisu danych wejściowych
     public static void writeFirstSheet(String[] line){
         Row row = sheet1.createRow(rSheet[0]);
         for (int i = 0; i < line.length; i++){
@@ -79,7 +79,7 @@ public class WriteFile {
         rSheet[2]++;
     }
 
-    //Funkcja zapisująca wartości do arkusza
+    //Funkcja zapisująca wartości kolekcji do arkusza
     public static void writeValues(int nr, float[] Values){
         Row row = sheet3.createRow(rSheet[2]);
         for (int i = 0; i < Values.length + 1; i++){
@@ -93,7 +93,7 @@ public class WriteFile {
         rSheet[2]++;
     }
 
-    //Funkcja zapisująca wymiany do arkusza
+    //Funkcja zapisująca informacje na temat wymian do arkusza
     public static void writeExchange(int nr, int p1, int p2, int[][] Objects){
         int nS = 0;
         int nO = 0;
@@ -105,8 +105,8 @@ public class WriteFile {
             Cell cell = row.createCell(i);
             switch (i) {
                 case 0 -> cell.setCellValue(nr);
-                case 1 -> cell.setCellValue(p1);
-                case 2 -> cell.setCellValue(p2);
+                case 1 -> cell.setCellValue(p2);
+                case 2 -> cell.setCellValue(p1);
                 default -> {
                     cell.setCellValue(Objects[nS][nO]);
                     nO++;

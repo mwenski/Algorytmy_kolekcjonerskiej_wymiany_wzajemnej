@@ -28,7 +28,6 @@ public class Algorithm extends Functions{
     public boolean[] Flags;
     int idExchange = 0;
 
-    //private final LinkedList<Integer>[] Adjacency;
     private final LinkedList<Integer> Queue = new LinkedList<>();
     private ArrayList<ExchangeProposition> ExchangePropositions;
 
@@ -70,7 +69,6 @@ public class Algorithm extends Functions{
                  for(int k = 0; k < numberOfObjects[j]; k++) Have[j][k] = toComplete - Propositions[i].Need[j][k];
              }
              Possessions[i] = new Possession(Have, sumTwoArrays(Have, Propositions[i].Offer));
-             System.out.println(i + ": " + Arrays.deepToString(Possessions[i].HaveAll));
         }
     }
 
@@ -120,16 +118,6 @@ public class Algorithm extends Functions{
         AnalyzeGraph(s);
     }
 
-    //Funkcja wywoływana po przeprowadzeniu jednego cyklu analizy
-    public void isAnalyzeCompleted(int i){
-        if(!ExchangePropositions.isEmpty()){
-            PerformExchange();
-            StartAnalyzingGraph(Queue.size() - 1);
-        }else{
-            if((i - 1) >= 0) StartAnalyzingGraph(i - 1);
-        }
-    }
-
     //Funkcja służąca do analizy grafu pod kątem możliwości przeprowadzenia wymian
     public void AnalyzeGraph(int i){
         int[][] iNeeds;
@@ -157,7 +145,16 @@ public class Algorithm extends Functions{
             }
         }
         isAnalyzeCompleted(i);
+    }
 
+    //Funkcja wywoływana po przeprowadzeniu jednego cyklu analizy
+    public void isAnalyzeCompleted(int i){
+        if(!ExchangePropositions.isEmpty()){
+            PerformExchange();
+            StartAnalyzingGraph(Queue.size() - 1);
+        }else{
+            if((i - 1) >= 0) StartAnalyzingGraph(i - 1);
+        }
     }
 
     //Funkcja służąca do wyboru odpowiedniej możliwości i przeprowadzenia wymiany
@@ -198,6 +195,7 @@ public class Algorithm extends Functions{
             Propositions[j].Offer = subtractTwoArrays(Propositions[j].Offer, iNeeds).clone();
 
             ComputeValues();
+            updateLogArea("Przeprowadzono wymianę między " + i + " a " + j );
 
             Queue.remove(Integer.valueOf(i));
             Queue.remove(Integer.valueOf(j));

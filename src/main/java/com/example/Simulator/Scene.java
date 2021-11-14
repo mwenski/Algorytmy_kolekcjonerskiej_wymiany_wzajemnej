@@ -30,7 +30,7 @@ public class Scene {
 
     public static TextArea _LogArea;
 
-    public File file = new File(System.getProperty("user.dir") + "\\Test.csv");
+    public File file = new File(System.getProperty("user.dir") + "\\Test1.csv");
     public File selectedDirectory = new File(System.getProperty("user.home")); //PLIK
 
     public String chosenFile = file.getAbsolutePath();
@@ -66,7 +66,7 @@ public class Scene {
     private static void configureFileChooser(final FileChooser fileChooser){
         fileChooser.setTitle("Wybierz plik wejściowy");
         fileChooser.setInitialDirectory(
-                new File(System.getProperty("user.home"))
+                new File(System.getProperty("user.dir"))
         );
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Plik CSV", "*.csv"),
@@ -92,7 +92,7 @@ public class Scene {
         );
     }
 
-    //TODO: Funkcja rozpoczynająca analizę (Wymyśl coś lepszego)
+    //Funkcja rozpoczynająca analizę
     @FXML
     protected void startAnalyze() throws Exception {
         setModeOfButtons(true);

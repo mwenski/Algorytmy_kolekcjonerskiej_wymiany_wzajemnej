@@ -1,3 +1,6 @@
+/*******************************
+ Klasa zawierająca funkcje matematyczne
+ *******************************/
 package com.example.Algorithms;
 
 public class Functions {
